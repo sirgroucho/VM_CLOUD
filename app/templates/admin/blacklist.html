@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Blacklist</h1>
+<ul>
+{% for e in entries %}
+  <li>{{ e.ip }} - {{ e.reason }}</li>
+{% endfor %}
+</ul>
+<form method="post">
+  <input name="ip" placeholder="IP" class="border">
+  <input name="reason" placeholder="Reason" class="border">
+  <button type="submit">Block</button>
+</form>
+{% endblock %}

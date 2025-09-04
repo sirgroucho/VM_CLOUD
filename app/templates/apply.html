@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Apply for Access</h1>
+<form method="post">
+  <input name="name" placeholder="Name" class="border"><br>
+  <input name="email" placeholder="Email" class="border"><br>
+  <label><input type="checkbox" name="services" value="minecraft"> Minecraft</label><br>
+  <label><input type="checkbox" name="services" value="media"> Media</label><br>
+  <label><input type="checkbox" name="services" value="nextcloud"> Nextcloud</label><br>
+  <button type="submit">Apply</button>
+</form>
+{% endblock %}
