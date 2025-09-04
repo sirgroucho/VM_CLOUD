@@ -4,3 +4,4 @@ flask-wtf
 flask-sqlalchemy
 pyjwt
 bcrypt
+gunicorn
