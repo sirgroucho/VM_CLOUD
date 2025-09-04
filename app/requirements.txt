@@ -2,6 +2,7 @@ flask
 flask-login
 flask-wtf
 flask-sqlalchemy
+flask-bcrypt
+flask-limiter
 pyjwt
-bcrypt
 gunicorn
