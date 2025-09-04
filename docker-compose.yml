@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   app:
     build: ./app
@@ -7,18 +5,16 @@ services:
     env_file: .env
     volumes:
       - app-data:/data
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
 
   nginx:
     image: nginx:latest
     container_name: marx_tec_nginx
     volumes:
       - ./nginx:/etc/nginx
-      - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     ports:
-      - "80:80"
       - "443:443"
       - "25565:25565"
     depends_on:
@@ -29,9 +25,7 @@ services:
     image: certbot/certbot
     container_name: marx_tec_certbot
     volumes:
-      - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   app-data:
