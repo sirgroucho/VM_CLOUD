@@ -9,8 +9,6 @@ services:
       - app-data:/data
     ports:
       - "8000:8000"
-    depends_on:
-      - nginx
 
   nginx:
     image: nginx:latest
