@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment & secrets
+.env
+.env.*
+!*.example
+certbot/secrets/*
+!certbot/secrets/*.example
+
+# Node / frontend
+node_modules/
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/project files
+.vscode/
+.idea/
+*.swp
+
+# Compiled/static
+staticfiles/
+dist/
+build/
+*.tar.gz
+*.zip
+*.bak

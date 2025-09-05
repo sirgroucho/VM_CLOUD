@@ -1,0 +1,42 @@
+# Git / VCS
+.git
+.gitignore
+.dockerignore
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Node / frontend
+node_modules/
+dist/
+build/
+
+# Secrets / env
+*.env
+*.ini
+certbot/secrets/*
+!certbot/secrets/*.example
+
+# OS/editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Misc
+*.tar
+*.tar.gz
+*.zip
+*.bak
