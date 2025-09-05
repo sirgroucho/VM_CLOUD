@@ -1,12 +1,17 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
 <h1>Apply for Access</h1>
-<form method="post">
-  <input name="name" placeholder="Name" class="border"><br>
-  <input name="email" placeholder="Email" class="border"><br>
-  <label><input type="checkbox" name="services" value="minecraft"> Minecraft</label><br>
-  <label><input type="checkbox" name="services" value="media"> Media</label><br>
-  <label><input type="checkbox" name="services" value="nextcloud"> Nextcloud</label><br>
-  <button type="submit">Apply</button>
+<form method="post" action="/apply">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Name <input type="text" name="name" required></label>
+  <label>Email <input type="email" name="email" required></label>
+  <input type="text" name="website" style="display:none">
+  <fieldset class="card">
+    <legend>Services</legend>
+    {% for svc in services %}
+      <label><input type="checkbox" name="services" value="{{svc.code}}"> {{svc.name}} ({{svc.code}})</label>
+    {% endfor %}
+  </fieldset>
+  <button class="btn" type="submit">Submit</button>
 </form>
 {% endblock %}

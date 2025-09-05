@@ -1,1 +1,1 @@
-console.log('Gateway JS loaded');
+// minimal

@@ -1,5 +1,41 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
 <h1>User Dashboard</h1>
-<a href="/user/devices">Manage Devices</a>
+
+<h2>Your Services</h2>
+<ul>
+  {% for s in services %}
+    <li>{{s.name}} ({{s.code}}){% if s.url %} — <a href="{{s.url}}" target="_blank">open</a>{% endif %}</li>
+  {% endfor %}
+</ul>
+
+<h2>Your Devices</h2>
+<form method="post" action="/user/devices">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Device name <input name="name" placeholder="e.g. Jay's Laptop"></label>
+  {% if current_user.role == 'admin' %}
+  <label><input type="checkbox" name="long_lived"> Issue 1-year token</label>
+  {% endif %}
+  <button class="btn" type="submit">Add device</button>
+</form>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr><th>Name</th><th>Issued</th><th>Expires</th><th>Status</th><th>Action</th></tr>
+  {% for d in devices %}
+    <tr>
+      <td>{{d.name}}</td>
+      <td>{{d.issued_at}}</td>
+      <td>{{d.expires_at if d.expires_at else 'never'}}</td>
+      <td>{% if d.revoked_at %}revoked{% else %}{% if d.is_active() %}active{% else %}expired{% endif %}{% endif %}</td>
+      <td>
+        {% if not d.revoked_at %}
+        <form method="post" action="/user/devices/revoke/{{d.id}}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn" type="submit">Revoke</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Edit Services — {{ user.email }}</h1>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% for svc in all_services %}
+    <label>
+      <input type="checkbox" name="services" value="{{svc.code}}"
+        {% if svc in [us.service for us in user.services] %}checked{% endif %}>
+      {{svc.name}} ({{svc.code}})
+    </label>
+  {% endfor %}
+  <button class="btn" type="submit">Save</button>
+</form>
+{% endblock %}

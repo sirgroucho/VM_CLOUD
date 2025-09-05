@@ -1,6 +1,35 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
 <h1>Admin Dashboard</h1>
-<a href="/admin/applications">Applications</a> |
-<a href="/admin/blacklist">Blacklist</a>
+
+<h2>Pending Applications</h2>
+{% for a in pending %}
+  <div class="card">
+    <div><b>{{a.name}}</b> — {{a.email}} • requested: {{a.requested_services}}</div>
+    <form method="post" action="/admin/applications/{{a.id}}/approve">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div>Approve services:</div>
+      {% set req = (a.requested_services or "").split(",") %}
+      {% for svc in ['minecraft','media','nextcloud'] %}
+        <label><input type="checkbox" name="services" value="{{svc}}" {% if svc in req %}checked{% endif %}> {{svc}}</label>
+      {% endfor %}
+      <button class="btn" type="submit">Approve</button>
+    </form>
+    <form method="post" action="/admin/applications/{{a.id}}/deny" style="margin-top:.5rem">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="text" name="reason" placeholder="Reason (optional)">
+      <button class="btn" type="submit">Deny</button>
+    </form>
+  </div>
+{% else %}
+  <p>No pending applications.</p>
+{% endfor %}
+
+<h2>Recent Users</h2>
+<ul>
+{% for u in users %}
+  <li>{{u.email}} — role: {{u.role}} — <a href="/admin/users/{{u.id}}/services">edit services</a></li>
+{% endfor %}
+</ul>
+<p><a href="/admin/audit">View audit log</a></p>
 {% endblock %}

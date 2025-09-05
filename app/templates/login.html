@@ -1,9 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-<h1 class="text-xl">Login</h1>
-<form method="post">
-  <input name="email" placeholder="Email" class="border"><br>
-  <input type="password" name="password" placeholder="Password" class="border"><br>
-  <button type="submit">Login</button>
+<h1>Login</h1>
+<form method="post" action="/login">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Email <input type="email" name="email" required></label>
+  <label>Password <input type="password" name="password" required></label>
+  <button class="btn" type="submit">Login</button>
 </form>
+<p><a href="/apply">Apply for access</a></p>
 {% endblock %}

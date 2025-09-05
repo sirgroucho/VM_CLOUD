@@ -1,25 +1,31 @@
 <!doctype html>
 <html>
 <head>
-  <title>Marx-Tec Gateway</title>
-  <link href="/static/css/tailwind.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "Marx-Tec" }}</title>
+  <link rel="stylesheet" href="/static/css/tailwind.css">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+    .flash { padding: .6rem 1rem; border-radius: .5rem; margin: .4rem 0; }
+    .success { background: #e6ffef; }
+    .error { background: #ffe6e6; }
+    .info { background: #e6f0ff; }
+    .card { border: 1px solid #ddd; border-radius: .5rem; padding: 1rem; margin-bottom: 1rem; }
+    .btn { padding: .5rem 1rem; border-radius: .4rem; border: 1px solid #ccc; background: #fafafa; cursor: pointer; }
+    form { margin: .5rem 0; }
+    label { display:block; margin:.25rem 0; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-  <nav class="bg-gray-800 p-4 text-white">
-    <a href="/">Home</a> |
-    <a href="/apply">Apply</a> |
-    <a href="/user">User</a> |
-    <a href="/admin">Admin</a>
-  </nav>
-  <div class="container mx-auto p-4">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, msg in messages %}
-          <div class="p-2 mb-2 bg-blue-200">{{ msg }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
-  </div>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{category}}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
 </body>
 </html>
