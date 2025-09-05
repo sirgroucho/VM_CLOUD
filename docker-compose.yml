@@ -1,33 +1,44 @@
+version: "3.8"
+
 services:
   app:
     build: ./app
     container_name: marx_tec_app
-    env_file: .env
+    env_file:
+      - .env
     volumes:
       - app-data:/data
     expose:
-      - "8000"
+      - "8000"            # internal only; no public port
+    restart: unless-stopped
 
   nginx:
     image: nginx:latest
     container_name: marx_tec_nginx
     volumes:
       - ./nginx:/etc/nginx
+      - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
     ports:
-      - "443:443"
-      - "25565:25565"
+      - "443:443"         # 80 is CLOSED per your requirement
+      - "25565:25565"     # minecraft TCP passthrough (unchanged)
     depends_on:
       - app
-    command: ["/bin/bash", "/etc/nginx/reloader.sh"]
+    # Use /bin/sh if your reloader.sh has a #!/bin/sh shebang (recommended)
+    command: ["/bin/sh", "/etc/nginx/reloader.sh"]
+    restart: unless-stopped
 
   certbot:
-    build: ./certbot
+    image: certbot/certbot
     container_name: marx_tec_certbot
     volumes:
+      - ./certbot/www:/var/www/certbot
       - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/secrets:/secrets
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --dns-porkbun --dns-porkbun-credentials /secrets/porkbun.ini --dns-porkbun-propagation-seconds 120; sleep 12h & wait $${!}; done;'"
+    entrypoint: >
+      /bin/sh -c 'trap exit TERM;
+      while :; do certbot renew;
+      sleep 12h & wait $${!}; done;'
+    restart: unless-stopped
 
 volumes:
   app-data:
